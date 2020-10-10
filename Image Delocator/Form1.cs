@@ -10,11 +10,23 @@ using System.Windows.Forms;
 
 namespace Image_Delocator
 {
-    public partial class Form1 : Form
+    public partial class UIForm : Form
     {
-        public Form1()
+        public UIForm()
         {
             InitializeComponent();
+            //List<string> test = new List<string>(){"Testing", "One", "Two", "Three"};
+            //Tools.Logger(test);
+
+            ProjectFolders.CreateCommonFolder();
         }
+
+        private void buttonOpen_Click(object sender, EventArgs e)
+        {
+            textBoxFile.Text = Tools.GetFilePath();
+            Tools.WriteImageData(textBoxFile.Text);
+            this.Close();
+        }
+
     }
 }

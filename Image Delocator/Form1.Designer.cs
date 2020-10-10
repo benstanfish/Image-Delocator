@@ -1,6 +1,6 @@
 ﻿namespace Image_Delocator
 {
-    partial class Form1
+    partial class UIForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,13 +28,46 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
+            this.buttonOpen = new System.Windows.Forms.Button();
+            this.textBoxFile = new System.Windows.Forms.TextBox();
+            this.SuspendLayout();
+            // 
+            // buttonOpen
+            // 
+            this.buttonOpen.Location = new System.Drawing.Point(13, 13);
+            this.buttonOpen.Name = "buttonOpen";
+            this.buttonOpen.Size = new System.Drawing.Size(75, 23);
+            this.buttonOpen.TabIndex = 0;
+            this.buttonOpen.Text = "Open";
+            this.buttonOpen.UseVisualStyleBackColor = true;
+            this.buttonOpen.Click += new System.EventHandler(this.buttonOpen_Click);
+            // 
+            // textBoxFile
+            // 
+            this.textBoxFile.Location = new System.Drawing.Point(94, 14);
+            this.textBoxFile.Name = "textBoxFile";
+            this.textBoxFile.Size = new System.Drawing.Size(567, 22);
+            this.textBoxFile.TabIndex = 1;
+            // 
+            // UIForm
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Text = "Form1";
+            this.ClientSize = new System.Drawing.Size(674, 448);
+            this.Controls.Add(this.textBoxFile);
+            this.Controls.Add(this.buttonOpen);
+            this.Name = "UIForm";
+            this.ShowIcon = false;
+            this.Text = "Image Delocator";
+            this.ResumeLayout(false);
+            this.PerformLayout();
+
         }
 
         #endregion
+
+        private System.Windows.Forms.Button buttonOpen;
+        private System.Windows.Forms.TextBox textBoxFile;
     }
 }
 
