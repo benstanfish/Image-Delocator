@@ -25,6 +25,7 @@ namespace Image_Delocator
         {
             textBoxFile.Text = Tools.GetFilePath();
             Tools.WriteImageData(textBoxFile.Text);
+            Tools.Delocate(textBoxFile.Text);
             this.Close();
         }
 

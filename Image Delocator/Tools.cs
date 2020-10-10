@@ -258,6 +258,34 @@ namespace Image_Delocator
             return myPath;
         }
 
+        public static void Delocate(string filePath)
+        {
+            List<string> errors = new List<string>();
+            try
+            {
+                if (File.Exists(filePath))
+                {
+                    Image image = new Bitmap(filePath);
+                    PropertyItem[] propItems = image.PropertyItems;
+
+                    int i = 0;
+                    foreach (PropertyItem propItem in propItems)
+                    {
+                        if (propItem.Id > -1 && propItem.Id < 8)
+                        {
+                            propItem.Id = 0;
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                errors.Add(e.ToString());
+                Logger(errors,isError:true);
+            }
+        }
+
+
         public static List<string> ReadPropertyItems(string filePath)
         {
             List<string> temp = new List<string>();
@@ -276,7 +304,6 @@ namespace Image_Delocator
                     Image image = new Bitmap(filePath);
                     PropertyItem[] propItems = image.PropertyItems;
                     
-                  
                     int i = 0;
                     foreach (PropertyItem propItem in propItems)
                     {
@@ -303,12 +330,19 @@ namespace Image_Delocator
             }
         }
 
-        public static void Logger(List<string> dataToLog, string filePath = null)
+        public static void Logger(List<string> dataToLog, string filePath = null, bool isError = false)
         {
             string tempPath;
             if (filePath == null)
             {
-                tempPath = ProjectFolders.ConfigFolder() + @"log_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".txt";
+                if (!isError)
+                {
+                    tempPath = ProjectFolders.ConfigFolder() + @"Log_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".txt";
+                }
+                else
+                {
+                    tempPath = ProjectFolders.ConfigFolder() + @"ErrorLog_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".txt";
+                }
             }
             else
             {
