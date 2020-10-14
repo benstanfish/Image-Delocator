@@ -24,10 +24,14 @@ namespace Image_Delocator
         private void buttonOpen_Click(object sender, EventArgs e)
         {
             textBoxFile.Text = Tools.GetFilePath();
-            Tools.WriteImageData(textBoxFile.Text);
-            Tools.Delocate(textBoxFile.Text);
+
+            //Tools.WriteImageData(textBoxFile.Text);
+            //Tools.Delocate(textBoxFile.Text);
             this.Close();
         }
+
+
+
 
     }
 }

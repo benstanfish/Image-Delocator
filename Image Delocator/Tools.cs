@@ -239,7 +239,6 @@ namespace Image_Delocator
             return temp;
         }
 
-
         public static string GetFilePath()
         {
             string myPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
@@ -271,10 +270,7 @@ namespace Image_Delocator
                     int i = 0;
                     foreach (PropertyItem propItem in propItems)
                     {
-                        if (propItem.Id > -1 && propItem.Id < 8)
-                        {
-                            propItem.Id = 0;
-                        }
+                       
                     }
                 }
             }
@@ -284,7 +280,6 @@ namespace Image_Delocator
                 Logger(errors,isError:true);
             }
         }
-
 
         public static List<string> ReadPropertyItems(string filePath)
         {
@@ -365,38 +360,119 @@ namespace Image_Delocator
         public static string GetValueFromType(PropertyItem propertyItem)
         {
             var propType = propertyItem.Type;
-          
             switch (propType)
             {
                 case 1:
                     //return Encoding.UTF8.GetString(propertyItem.Value, 0, propertyItem.Value.Length);
-                    return BitConverter.ToString(propertyItem.Value);
+                    //return BitConverter.ToString(propertyItem.Value);
+                    break;
                 case 2:
-                    return Encoding.ASCII.GetString(propertyItem.Value,0,propertyItem.Value.Length);
+                    //return Encoding.ASCII.GetString(propertyItem.Value,0,propertyItem.Value.Length);
                     break;
                 case 3: case 4:
-                    return BitConverter.ToString(propertyItem.Value);
+                    //return BitConverter.ToString(propertyItem.Value);
                     break;
                 case 5:
+                    
                     //return BitConverter.ToDouble(propertyItem.Value, 0).ToString();
-                    return BitConverter.ToString(propertyItem.Value);
+                    //return BitConverter.ToString(propertyItem.Value);
                     break;
                 case 6: case 7: case 8:
                     break;
                 case 9: case 10:
-                    return propertyItem.Value.ToString();
+                    //return propertyItem.Value.ToString();
                     break;
                 default:
-                    return propertyItem.Value.ToString();
+                    //return propertyItem.Value.ToString();
                     break;
             }
 
             return null;
         }
 
+        
+
+        public static string GetDateTaken(Image image)
+        {
+            //Property Item 0x0132 - PropertyTagDateTime
+            PropertyItem propItemRef = image.GetPropertyItem(306);
+
+            return Encoding.ASCII.GetString(propItemRef.Value, 0, propItemRef.Value.Length);
+        }
+
+
+        public static float GetAltitude(Image image)
+        {
+            try
+            {
+                //Property Item 0x0005 - PropertyTagGpsAltitudeRef
+                PropertyItem propItemRef = image.GetPropertyItem(5);
+                //Property Item 0x0006 - PropertyTagGpsAltitude
+                PropertyItem propItemAlt = image.GetPropertyItem(6);
+
+                var AltNumerator = BitConverter.ToUInt32(propItemAlt.Value, 0);
+                var AltDemonimator = BitConverter.ToUInt32(propItemAlt.Value, 4);
+                float Altitude = AltNumerator / (float)AltDemonimator;
+                return Altitude;
+            }
+            catch (ArgumentException)
+            {
+                return 0f;
+            }
+        }
+
+        public static float[] GetLatitude(Image image)
+        {
+            try
+            {
+                //Property Item 0x0001 - PropertyTagGpsLatitudeRef
+                PropertyItem propItemRef = image.GetPropertyItem(1);
+                //Property Item 0x0002 - PropertyTagGpsLatitude
+                PropertyItem propItemLat = image.GetPropertyItem(2);
+                return ExifGpsToFloat(propItemRef, propItemLat);
+            }
+            catch (ArgumentException)
+            {
+                return new[] {0f};
+            }
+        }
+        public static float[] GetLongitude(Image image)
+        {
+            try
+            {
+                ///Property Item 0x0003 - PropertyTagGpsLongitudeRef
+                PropertyItem propItemRef = image.GetPropertyItem(3);
+                //Property Item 0x0004 - PropertyTagGpsLongitude
+                PropertyItem propItemLong = image.GetPropertyItem(4);
+                return ExifGpsToFloat(propItemRef, propItemLong);
+            }
+            catch (ArgumentException)
+            {
+                return new[] { 0f };
+            }
+        }
+        private static float[] ExifGpsToFloat(PropertyItem propItemRef, PropertyItem propItem)
+        {
+            uint degreesNumerator = BitConverter.ToUInt32(propItem.Value, 0);
+            uint degreesDenominator = BitConverter.ToUInt32(propItem.Value, 4);
+            float degrees = degreesNumerator / (float)degreesDenominator;
+
+            uint minutesNumerator = BitConverter.ToUInt32(propItem.Value, 8);
+            uint minutesDenominator = BitConverter.ToUInt32(propItem.Value, 12);
+            float minutes = minutesNumerator / (float)minutesDenominator;
+
+            uint secondsNumerator = BitConverter.ToUInt32(propItem.Value, 16);
+            uint secondsDenominator = BitConverter.ToUInt32(propItem.Value, 20);
+            float seconds = secondsNumerator / (float)secondsDenominator;
+
+            float[] coordinate = {degrees, (minutes), (seconds)};
+            string gpsRef = System.Text.Encoding.ASCII.GetString(new byte[1] { propItemRef.Value[0] }); //N, S, E, or W
+            //if (gpsRef == "S" || gpsRef == "W")
+            //    coordinate = 0 - coordinate;
+            return coordinate;
+        }
+
 
     }
-
-
 
 }
