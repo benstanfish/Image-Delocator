@@ -395,11 +395,30 @@ namespace Image_Delocator
         public static string GetDateTaken(Image image)
         {
             //Property Item 0x0132 - PropertyTagDateTime
-            PropertyItem propItemRef = image.GetPropertyItem(306);
+            PropertyItem propItemDate = image.GetPropertyItem(306);
 
-            return Encoding.ASCII.GetString(propItemRef.Value, 0, propItemRef.Value.Length);
+            return Encoding.ASCII.GetString(propItemDate.Value, 0, propItemDate.Value.Length);
         }
 
+
+        public static string GetCameraMake(Image image)
+        {
+            //Property Item 0x010F - PropertyTagEquipMake
+            PropertyItem propItemMake = image.GetPropertyItem(271);
+
+
+            var Make = Encoding.ASCII.GetString(propItemMake.Value, 0, propItemMake.Value.Length);
+
+            return Make.Trim();
+        }
+        public static string GetCameraModel(Image image)
+        {
+            //Property Item 0x0110 - PropertyTagEquipModel
+            PropertyItem propItemModel = image.GetPropertyItem(272);
+
+            var Model = Encoding.ASCII.GetString(propItemModel.Value, 0, propItemModel.Value.Length);
+            return Model.Trim();
+        }
 
         public static float GetAltitude(Image image)
         {

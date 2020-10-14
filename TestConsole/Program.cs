@@ -27,11 +27,15 @@ namespace TestConsole
             var Long = Tools.GetLongitude(image);
             var Alt = Tools.GetAltitude(image);
             var DateTaken = Tools.GetDateTaken(image);
+            var Make = Tools.GetCameraMake(image);
+            var Model = Tools.GetCameraModel(image);
 
             Console.WriteLine("Lat: " + Lat[0] + ", " + Lat[1] + ", " + Lat[2]);
             Console.WriteLine("Long: " + Long[0] + ", " + Long[1] + ", " + Long[2]);
             Console.WriteLine("Alt: " + Alt);
             Console.WriteLine("Date: " + DateTaken);
+            Console.WriteLine("Make: " + Make );
+            Console.WriteLine("Model: " + Model);
             Console.ReadLine();
         }
     }
