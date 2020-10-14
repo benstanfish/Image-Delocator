@@ -507,9 +507,11 @@ namespace Image_Delocator
                 
                 for (int i = 0; i < bytes.Length; i++)
                 {
+                    
                     byteString += bytes[i].ToString() + " ";
+                    
                 }
-
+                Console.WriteLine("Array Length: " + bytes.Length);
                 Console.WriteLine(byteString);
             }
             catch (Exception)
