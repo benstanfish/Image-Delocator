@@ -36,6 +36,7 @@ namespace TestConsole
             Console.WriteLine("Date: " + DateTaken);
             Console.WriteLine("Make: " + Make );
             Console.WriteLine("Model: " + Model);
+            Console.WriteLine(Tools.gpsBits(image));
             Console.ReadLine();
         }
     }

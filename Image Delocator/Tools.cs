@@ -440,6 +440,8 @@ namespace Image_Delocator
             }
         }
 
+
+
         public static float[] GetLatitude(Image image)
         {
             try
@@ -491,7 +493,33 @@ namespace Image_Delocator
             return coordinate;
         }
 
+        public static bool gpsBits(Image image)
+        {
+            string byteString = "";
+            try
+            {
+                //Property Item 0x0002 - PropertyTagGpsLatitude
+                PropertyItem propItemLat = image.GetPropertyItem(2);
+                byte[] bytes = propItemLat.Value;
 
+                uint num = BitConverter.ToUInt32(propItemLat.Value, 0);
+                uint dem = BitConverter.ToUInt32(propItemLat.Value, 4);
+                
+                for (int i = 0; i < bytes.Length; i++)
+                {
+                    byteString += bytes[i].ToString() + " ";
+                }
+
+                Console.WriteLine(byteString);
+            }
+            catch (Exception)
+            {
+            }
+
+            return true;
+
+
+        }
     }
 
 }
